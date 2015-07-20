@@ -1,8 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\RideauSideBehaviour.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="..\..\..\ENJMIN\Wasted\Wasted-Classic\Assets\Wwise\Deployment\API\Generated\Windows\AkSoundEngine_Windows.cs">
     <Files>
-      <File FileName="Assets\Scripts\RideauSideBehaviour.cs" Line="4" Column="44" />
+      <File FileName="..\..\..\ENJMIN\Wasted\Wasted-Classic\Assets\Wwise\Deployment\API\Generated\Windows\AkSoundEngine_Windows.cs" Line="3285" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
