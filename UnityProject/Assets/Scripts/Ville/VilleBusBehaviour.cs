@@ -20,4 +20,9 @@ public class VilleBusBehaviour : MonoBehaviour {
 		gameEngine.KillBus ();
 		gameEngine.PlayEnding ();
 	}
+
+	public void PlayMotorSound()
+	{
+		this.GetComponent<AudioSource> ().Play ();
+	}
 }

@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class VilleScoutBehaviourScript : MonoBehaviour 
 {
 	public VilleGameEngineBehaviour gameEngine;
 
 	public bool wantCandies;
+
+	public AudioClip hitByCar;
+	public List<AudioClip> slurps;
 
 	// Use this for initialization
 	void Start () 
@@ -37,8 +41,8 @@ public class VilleScoutBehaviourScript : MonoBehaviour
 	{
 		if (col.tag.Equals("Car"))
 		{
-			Debug.Log ("SCOUT HIT !");
 			this.GetComponent<Animator> ().SetTrigger ("HitByCar");
+			col.GetComponent<VilleCarBehaviourScript>().PlayNutNutSound();
 		}
 	}
 
@@ -56,5 +60,20 @@ public class VilleScoutBehaviourScript : MonoBehaviour
 	{
 		wantCandies = false;
 		this.GetComponent<Animator> ().SetBool ("GoToShop", false);
+	}
+
+	public void SlurpNoise()
+	{
+		this.GetComponent<AudioSource> ().Stop ();
+		int r = Random.Range (0, slurps.Count);
+		this.GetComponent<AudioSource> ().clip = slurps[r];
+		this.GetComponent<AudioSource> ().Play ();
+	}
+
+	public void HitByCarNoise()
+	{
+		this.GetComponent<AudioSource> ().Stop ();
+		this.GetComponent<AudioSource> ().clip = hitByCar;
+		this.GetComponent<AudioSource> ().Play ();
 	}
 }

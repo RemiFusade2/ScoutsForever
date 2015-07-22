@@ -62,11 +62,16 @@ public class VilleGameEngineBehaviour : MonoBehaviour {
 	public float choiceDuration;
 	private float lastChoiceTime;
 
+	public AudioClip backgroundMusic;
+	public AudioClip backgroundMusicWithVoices;
+
+	public GameObject topCurtain;
+
 	// Use this for initialization
 	void Start () 
 	{
 		activeScouts = new List<GameObject> ();
-
+		
 		playIntro = true;
 		playEnding = false;
 		playGame = false;
@@ -80,10 +85,15 @@ public class VilleGameEngineBehaviour : MonoBehaviour {
 
 		greenLightAnimator.SetBool("greenLightOn", false);
 		redLightAnimator.SetBool("greenLightOn", false);
+
+		this.GetComponent<AudioSource> ().clip = backgroundMusicWithVoices;
+		this.GetComponent<AudioSource> ().Play ();
 		
 		UpdateScoutGroup();
+
+		topCurtain.GetComponent<Animator> ().SetBool ("Up", true);
 	}
-	
+
 	// Update is called once per frame
 	void Update () 
 	{
@@ -164,8 +174,15 @@ public class VilleGameEngineBehaviour : MonoBehaviour {
 	{
 		if (sceneEnded && bus == null)
 		{
-			Application.LoadLevel("transitionForest");
+			topCurtain.GetComponent<Animator> ().SetBool ("Up", false);
+			StartCoroutine(WaitAndLoadNextLevel(2.5f, "transitionForest"));
 		}
+	}
+	
+	IEnumerator WaitAndLoadNextLevel(float timeToWait, string nextLevelName)
+	{
+		yield return new WaitForSeconds(timeToWait);
+		Application.LoadLevel(nextLevelName);
 	}
 
 	public void NextText()
@@ -249,7 +266,16 @@ public class VilleGameEngineBehaviour : MonoBehaviour {
 		killedScouts++;
 		ChangeScoutCounter ();
 		activeScouts.Remove (scout);
-		Destroy (scout);
+		StartCoroutine(WaitAndKillGameObject(2, scout));
+	}
+	
+	IEnumerator WaitAndKillGameObject(float timeToWait, GameObject go)
+	{
+		yield return new WaitForSeconds(timeToWait);
+		if (go != null)
+		{
+			Destroy (go);
+		}
 	}
 
 	public void ScoutGoesOnBus(GameObject scout)
@@ -262,7 +288,7 @@ public class VilleGameEngineBehaviour : MonoBehaviour {
 
 	public void KillBus()
 	{
-		Destroy (bus);
+		StartCoroutine(WaitAndKillGameObject(2, bus));
 		bus = null;
 	}
 
