@@ -72,6 +72,7 @@ public class VilleScoutBehaviourScript : MonoBehaviour
 
 	public void HitByCarNoise()
 	{
+		gameEngine.CameraShake ();
 		this.GetComponent<AudioSource> ().Stop ();
 		this.GetComponent<AudioSource> ().clip = hitByCar;
 		this.GetComponent<AudioSource> ().Play ();

@@ -19,4 +19,9 @@ public class TransitionBusBehaviour : MonoBehaviour {
 	{
 		gameEngine.EndScene (this.gameObject);
 	}
+
+	public void PlayMotorSound()
+	{
+		this.GetComponent<AudioSource> ().Play ();
+	}
 }
