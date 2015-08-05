@@ -62,6 +62,8 @@
      <Compile Include="Assets\Scripts\Ville\VilleCarBehaviourScript.cs" />
      <Compile Include="Assets\Scripts\Ville\VilleGameEngineBehaviour.cs" />
      <Compile Include="Assets\Scripts\Ville\VilleScoutBehaviourScript.cs" />
+     <Compile Include="Assets\Scripts\WoodFireStory\WoodFireScoutBehaviour.cs" />
+     <Compile Include="Assets\Scripts\WoodFireStory\WoodFireStoryGameEngine.cs" />
      <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlendOneOne.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseEffectShaderRGB.shader" />
