@@ -1,0 +1,12 @@
+Scout Forever
+Bruitages
+
+Bus:
+- bus à l'arrêt, moteur allumé, boucle (on a déjà le bruit camion.mp3 pour le bus qui démarre)
+Scène "Monter la tente":
+- bruit de marteau sur le piquet
+- bruit de marteau sur la main (ou la tête)
+Scène "Feu de camp":
+- loup qui mange un scout
+- scout qui soupire et va se coucher
+- scout qui dort
