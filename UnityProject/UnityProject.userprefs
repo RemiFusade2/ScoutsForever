@@ -1,10 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\WoodFireStory\WoodFireStoryGameEngine.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Menu\MenuMainCreditPeopleBehaviour.cs">
     <Files>
-      <File FileName="Assets\Scripts\WoodFireStory\WoodFireStoryGameEngine.cs" Line="290" Column="34" />
-      <File FileName="Assets\Scripts\GeneralClasses\ApplicationModel.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\WoodFireStory\WoodFireScoutBehaviour.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Menu\PlayButtonBehaviour.cs" Line="7" Column="1" />
+      <File FileName="Assets\Scripts\Menu\MenuMainEngine.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Menu\MenuMainCurtainBehaviour.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Menu\CreditsButtonBehaviour.cs" Line="5" Column="2" />
+      <File FileName="Assets\Scripts\Menu\MenuMainCreditPeopleBehaviour.cs" Line="14" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

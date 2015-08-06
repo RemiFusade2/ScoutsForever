@@ -55,6 +55,12 @@
      <Compile Include="Assets\Scripts\CouperDuBois\CouperBoisTasDeBoisBehaviour.cs" />
      <Compile Include="Assets\Scripts\CouperDuBois\CouperBoisWoodBehaviour.cs" />
      <Compile Include="Assets\Scripts\GeneralClasses\ApplicationModel.cs" />
+     <Compile Include="Assets\Scripts\Menu\CreditsButtonBehaviour.cs" />
+     <Compile Include="Assets\Scripts\Menu\MenuMainCreditPeopleBehaviour.cs" />
+     <Compile Include="Assets\Scripts\Menu\MenuMainCurtainBehaviour.cs" />
+     <Compile Include="Assets\Scripts\Menu\MenuMainEngine.cs" />
+     <Compile Include="Assets\Scripts\Menu\MenuMainScoutTitleBehaviour.cs" />
+     <Compile Include="Assets\Scripts\Menu\PlayButtonBehaviour.cs" />
      <Compile Include="Assets\Scripts\ScoutGroupBehaviour.cs" />
      <Compile Include="Assets\Scripts\Transition\TransitionBusBehaviour.cs" />
      <Compile Include="Assets\Scripts\Transition\TransitionGameEngineBehaviour.cs" />
