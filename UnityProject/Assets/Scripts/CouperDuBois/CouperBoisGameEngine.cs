@@ -78,7 +78,9 @@ public class CouperBoisGameEngine : MonoBehaviour
 		scoutGroup.GetComponent<ScoutGroupBehaviour>().UpdateScoutGroup(remainingScoutsInGroup);
 		ChangeScoutCounter ();
 
-		int woodCount = Mathf.Max (5, Mathf.Min(10, remainingScoutsInGroup));
+		int maxWoodCount = 6;
+		int minWoodCount = 4;
+		int woodCount = Mathf.Max (minWoodCount, Mathf.Min(maxWoodCount, remainingScoutsInGroup));
 		tasDeBois.GetComponent<CouperBoisTasDeBoisBehaviour> ().InitializeWithWoodCount (woodCount);
 
 		playIntro = true;
@@ -115,7 +117,10 @@ public class CouperBoisGameEngine : MonoBehaviour
 				if (textIndex == 5)
 				{
 					// bus goes away
-					bus.GetComponent<Animator> ().SetTrigger ("Leaves");
+					if (bus != null)
+					{
+						bus.GetComponent<Animator> ().SetTrigger ("Leaves");
+					}
 				}
 				if (textIndex == 8)
 				{

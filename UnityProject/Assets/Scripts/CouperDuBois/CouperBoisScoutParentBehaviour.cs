@@ -15,6 +15,7 @@ public class CouperBoisScoutParentBehaviour : MonoBehaviour {
 	{
 		scoutReturnedInGroup = false;
 		collisionHasBeenProcessed = false;
+		this.GetComponent<Animator> ().SetInteger ("RandomWalk", Random.Range (0, 4));
 	}
 	
 	public void KillScout()
@@ -56,6 +57,7 @@ public class CouperBoisScoutParentBehaviour : MonoBehaviour {
 	public void TriggerSpawnScout()
 	{
 		gameEngine.TriggerSpawScout ();
+		this.GetComponent<Animator> ().SetInteger ("RandomWalk", Random.Range (0, 4));
 	}
 
 	public void PlaySound()
