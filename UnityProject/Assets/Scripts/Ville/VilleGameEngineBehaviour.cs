@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using AssemblyCSharp;
 
 public class VilleGameEngineBehaviour : MonoBehaviour {
 
@@ -49,7 +50,10 @@ public class VilleGameEngineBehaviour : MonoBehaviour {
 	public string choicesMainText;
 	public string choice1Text;
 	public string choice2Text;
-	public List<string> endingTexts;
+	public List<string> endingPerfectTexts;
+	public List<string> endingOKTexts;
+	public List<string> endingFailTexts;
+	private List<string> endingTexts;
 
 	private bool playIntro;
 	private bool playEnding;
@@ -70,6 +74,11 @@ public class VilleGameEngineBehaviour : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
+		Debug.Log (ApplicationModel.idealFontSize);
+
+		uiMainTextWithChoices.fontSize = ApplicationModel.idealFontSize;
+		uiMainText.fontSize = ApplicationModel.idealFontSize;
+
 		activeScouts = new List<GameObject> ();
 		
 		playIntro = true;
@@ -79,6 +88,7 @@ public class VilleGameEngineBehaviour : MonoBehaviour {
 		textIndex = 0;
 		savedScouts = 0;
 		killedScouts = 0;
+		totalScouts = 11; //ApplicationModel.scoutsRemaining;
 		remainingScouts = totalScouts;
 
 		ChangeScoutCounter ();
@@ -167,6 +177,18 @@ public class VilleGameEngineBehaviour : MonoBehaviour {
 			playEnding = true;
 			playGame = false;
 			textIndex = 0;
+			if (killedScouts == 0)
+			{
+				endingTexts = endingPerfectTexts;
+			} 
+			else if (savedScouts == 0)
+			{				
+				endingTexts = endingFailTexts;
+			}
+			else
+			{				
+				endingTexts = endingOKTexts;
+			}
 		}
 	}
 	
@@ -175,14 +197,28 @@ public class VilleGameEngineBehaviour : MonoBehaviour {
 		if (sceneEnded && bus == null)
 		{
 			topCurtain.GetComponent<Animator> ().SetBool ("Up", false);
-			StartCoroutine(WaitAndLoadNextLevel(2.5f, "transitionForest"));
+			if (savedScouts > 0)
+			{
+				ApplicationModel.scoutsRemaining = savedScouts;
+				StartCoroutine(WaitAndLoadNextLevel(2.5f, "transitionForest"));
+			}
+			else
+			{
+				StartCoroutine(WaitAndLoadMenu(2.5f));
+			}
 		}
 	}
 	
+	IEnumerator WaitAndLoadMenu(float timeToWait)
+	{
+		yield return new WaitForSeconds (timeToWait);
+		Application.LoadLevelAsync ("menu");
+	}
+
 	IEnumerator WaitAndLoadNextLevel(float timeToWait, string nextLevelName)
 	{
 		yield return new WaitForSeconds(timeToWait);
-		Application.LoadLevel(nextLevelName);
+		Application.LoadLevelAsync(nextLevelName);
 	}
 
 	public void NextText()
@@ -240,7 +276,7 @@ public class VilleGameEngineBehaviour : MonoBehaviour {
 
 	private void UpdateScoutGroup()
 	{
-		int indexGroup = (remainingScouts - 1) > 10 ? 10 : (remainingScouts - 1);
+		int indexGroup = (remainingScouts > 0) ? ( (remainingScouts - 1) > 10 ? 10 : (remainingScouts - 1) ) : 0;
 		scoutGroup.GetComponent<Renderer> ().material.mainTexture = scoutGroupTextures [indexGroup];
 	}
 
@@ -309,12 +345,12 @@ public class VilleGameEngineBehaviour : MonoBehaviour {
 		if (choice == 1)
 		{
 			// Cross
-			TellChoiceToAllScouts(1);
+			TellChoiceToAllScouts(1, true);
 		}
 		if (choice == 2)
 		{
 			// Wait...
-			TellChoiceToAllScouts(-1);
+			TellChoiceToAllScouts(-1, true);
 		}
 		lastChoiceTime = Time.time;
 	}
@@ -324,19 +360,32 @@ public class VilleGameEngineBehaviour : MonoBehaviour {
 		if (Time.time - lastChoiceTime > choiceDuration)
 		{
 			// choice is no more up to date
-			TellChoiceToAllScouts(0);
+			TellChoiceToAllScouts(0, false);
 		}
 	}
 
-	private void TellChoiceToAllScouts(int stopOrCross)
+	public GameObject supriseFXPrefab;
+
+	private void TellChoiceToAllScouts(int stopOrCross, bool showSurpriseFX)
 	{
 		float timeToWait = 0;
 		foreach (GameObject scout in activeScouts)
 		{
+			if (showSurpriseFX)
+			{	
+				StartCoroutine(WaitAndInstantiateSurpriseFX(0.1f, scout.transform.position + Vector3.up * 10));
+			}
 			//scout.GetComponent<ScoutBehaviourScript>().UpdateUserInput(stopOrCross);
 			StartCoroutine(WaitAndUpdateScout(timeToWait, scout, stopOrCross));
 			timeToWait += 0.05f;
 		}
+	}
+
+	IEnumerator WaitAndInstantiateSurpriseFX (float timeToWait, Vector3 position)
+	{
+		yield return new WaitForSeconds(timeToWait);
+		GameObject surpriseFXGameObject = Instantiate (supriseFXPrefab, position, Quaternion.Euler(90, 270, 90)) as GameObject;
+		StartCoroutine(WaitAndKillGameObject( 1.5f, surpriseFXGameObject));
 	}
 
 	IEnumerator WaitAndUpdateScout(float timeToWait, GameObject scout, int stopOrCross)

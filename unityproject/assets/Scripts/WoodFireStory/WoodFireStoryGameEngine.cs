@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using AssemblyCSharp;
 
 [System.Serializable]
 public class WoodFireStoryLine
@@ -74,9 +75,15 @@ public class WoodFireStoryGameEngine : MonoBehaviour {
 	public Transform scarfSpawner;
 	public List<GameObject> scoutScarfs;
 
+
+	public WoodFireTentBehaviour tent;
+
 	// Use this for initialization
 	void Start () 
-	{
+	{		
+		uiMainTextWithChoices.fontSize = ApplicationModel.idealFontSize;
+		uiMainText.fontSize = ApplicationModel.idealFontSize;
+
 		introPlaying = true;
 		gameRunning = false;
 		endingPlaying = false;
@@ -87,7 +94,7 @@ public class WoodFireStoryGameEngine : MonoBehaviour {
 		ShowUI ();
 		uiMainText.text = introTexts[0];
 
-		totalScouts = 2;
+		totalScouts = 11; //ApplicationModel.scoutsRemaining;
 		remainingScouts = totalScouts;
 		remainingScoutsInGroup = remainingScouts;
 		savedScouts = 0;
@@ -160,9 +167,10 @@ public class WoodFireStoryGameEngine : MonoBehaviour {
 		{
 			for (int i = 0 ; i < numberOfScouts ; i++)
 			{
-				if (i < remainingScouts)
+				if (i < remainingScoutsInGroup)
 				{
 					StartCoroutine(WaitAndSendScoutToDie(timeOffset+i));
+					StartCoroutine(WaitAndCameraShake(timeOffset+i+2.0f));
 					StartCoroutine(WaitAndPlaySound(timeOffset+i+1.8f, crunchSound));
 					StartCoroutine(WaitAndSpawnScarf(timeOffset+i+2.5f));
 				}
@@ -189,7 +197,7 @@ public class WoodFireStoryGameEngine : MonoBehaviour {
 		{
 			for (int i = 0; i < numberOfScouts; i++) 
 			{
-				if (i < remainingScouts)
+				if (i < remainingScoutsInGroup)
 				{
 					StartCoroutine(WaitAndSendScoutToBed(timeOffset+i));
 					savedScouts++;
@@ -206,6 +214,7 @@ public class WoodFireStoryGameEngine : MonoBehaviour {
 		scout.GetComponent<WoodFireScoutBehaviour> ().GoToSleep ();
 		remainingScoutsInGroup--;
 		scoutGroup.GetComponent<ScoutGroupBehaviour>().UpdateScoutGroup (remainingScoutsInGroup);
+		tent.scoutsInTent++;
 	}
 
 	public void KillScout(GameObject scout)
@@ -320,12 +329,19 @@ public class WoodFireStoryGameEngine : MonoBehaviour {
 			{
 				// end game
 				mainCurtain.GetComponent<Animator> ().SetBool ("Up", false);
+				StartCoroutine(WaitAndLoadMenu(2.5f));
 			}
 			else
 			{
 				uiMainText.text = endingTexts[textIndex];
 			}
 		}
+	}
+
+	IEnumerator WaitAndLoadMenu(float timeToWait)
+	{
+		yield return new WaitForSeconds (timeToWait);
+		Application.LoadLevelAsync ("menu");
 	}
 		
 	private void LaunchBoringAtmosphere()
@@ -384,9 +400,44 @@ public class WoodFireStoryGameEngine : MonoBehaviour {
 	{
 		yield return new WaitForSeconds(timeToWait);
 
-		int index = Random.Range(0,scoutScarfs.Count-1);
+		int index = Random.Range(0,scoutScarfs.Count);
 		GameObject scarf = Instantiate(scoutScarfs[index], scarfSpawner.transform.position, Quaternion.Euler(90,180,0)) as GameObject;
 		scarf.GetComponent<Rigidbody>().velocity = Vector3.right * 10 + Vector3.up * 10;
 		scarf.GetComponent<Rigidbody> ().angularVelocity = Vector3.forward * 1;
+	}
+
+
+
+	IEnumerator WaitAndCameraShake(float timeToWait)
+	{
+		yield return new WaitForSeconds (timeToWait);
+		StartCoroutine(Shake(0.3f, 0.3f));
+	}
+	
+	IEnumerator Shake(float duration, float magnitude) {
+		
+		float elapsed = 0.0f;
+		
+		Vector3 originalCamPos = Camera.main.transform.position;
+		
+		while (elapsed < duration) 
+		{			
+			elapsed += Time.deltaTime;          
+			
+			float percentComplete = elapsed / duration;         
+			float damper = 1.0f - Mathf.Clamp(4.0f * percentComplete - 3.0f, 0.0f, 1.0f);
+			
+			// map value to [-1, 1]
+			float x = Random.value * 2.0f - 1.0f;
+			float y = Random.value * 2.0f - 1.0f;
+			x *= magnitude * damper;
+			y *= magnitude * damper;
+			
+			Camera.main.transform.position = new Vector3(originalCamPos.x+x, originalCamPos.y+y, originalCamPos.z);
+			
+			yield return null;
+		}
+		
+		Camera.main.transform.position = originalCamPos;
 	}
 }

@@ -65,13 +65,16 @@ public class CouperBoisGameEngine : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
+		uiMainTextWithChoices.fontSize = ApplicationModel.idealFontSize;
+		uiMainText.fontSize = ApplicationModel.idealFontSize;
+
 		logsCount = 0;
 
 		mainCurtain.GetComponent<Animator> ().SetBool ("Up", true);
 
 		activeScouts = new List<GameObject> ();
 
-		totalScouts = 15; //ApplicationModel.scoutsRemaining;
+		totalScouts = ApplicationModel.scoutsRemaining;
 		remainingScouts = totalScouts;
 		remainingScoutsInGroup = remainingScouts - 1;
 		killedScouts = 0;
@@ -321,7 +324,30 @@ public class CouperBoisGameEngine : MonoBehaviour
 			playEnding = false;
 			sceneEnded = true;
 			mainCurtain.GetComponent<Animator>().SetBool("Up", false);
+			
+			if (endingTexts != endingFailTexts)
+			{
+				ApplicationModel.scoutsRemaining = remainingScouts;
+				StartCoroutine(WaitAndLoadNextLevel(2.5f, "levelWoodFire"));
+			}
+			else
+			{
+				StartCoroutine(WaitAndLoadMenu(2.5f));
+			}
+
 		}
+	}
+	
+	IEnumerator WaitAndLoadMenu(float timeToWait)
+	{
+		yield return new WaitForSeconds (timeToWait);
+		Application.LoadLevelAsync ("menu");
+	}
+	
+	IEnumerator WaitAndLoadNextLevel(float timeToWait, string nextLevelName)
+	{
+		yield return new WaitForSeconds(timeToWait);
+		Application.LoadLevelAsync(nextLevelName);
 	}
 
 	public void PressChoice(int choice)

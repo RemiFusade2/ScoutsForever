@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using AssemblyCSharp;
 
 public class TransitionGameEngineBehaviour : MonoBehaviour {
 
@@ -21,10 +22,12 @@ public class TransitionGameEngineBehaviour : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
+		uiMainText.fontSize = ApplicationModel.idealFontSize;
+
 		playIntro = true;
 		sceneEnded = false;
 		textIndex = 0;
-		mainCurtain.GetComponent<Animator> ().SetBool ("Up", true);
+		//mainCurtain.GetComponent<Animator> ().SetBool ("Up", true);
 	}
 	
 	// Update is called once per frame
@@ -61,7 +64,7 @@ public class TransitionGameEngineBehaviour : MonoBehaviour {
 	IEnumerator WaitAndLoadNextLevel(float timeToWait, string nextLevelName)
 	{
 		yield return new WaitForSeconds(timeToWait);
-		Application.LoadLevel(nextLevelName);
+		Application.LoadLevelAsync(nextLevelName);
 	}
 	
 	IEnumerator WaitAndKillGameObject(float timeToWait, GameObject go)

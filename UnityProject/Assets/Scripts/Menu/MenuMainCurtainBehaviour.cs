@@ -14,9 +14,4 @@ public class MenuMainCurtainBehaviour : MonoBehaviour {
 	void Update () {
 	
 	}
-
-	public void StartGame()
-	{
-		gameEngine.StartGame ();
-	}
 }

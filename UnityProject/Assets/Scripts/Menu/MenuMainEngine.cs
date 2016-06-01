@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using AssemblyCSharp;
+using UnityEngine.UI;
 
 public class MenuMainEngine : MonoBehaviour {
 	
@@ -8,6 +10,8 @@ public class MenuMainEngine : MonoBehaviour {
 
 	public List<GameObject> mainMenuObjects;
 	public List<GameObject> creditsObjects;
+
+	public Text copyrightLabel;
 
 	// Use this for initialization
 	void Start ()
@@ -21,14 +25,21 @@ public class MenuMainEngine : MonoBehaviour {
 	
 	}
 
-	public void PutCurtainDown()
+	public void PutCurtainDownAndStartGame()
 	{
 		mainCurtain.GetComponent<Animator> ().SetBool ("Up", false);
+
+		ApplicationModel.idealFontSize = copyrightLabel.cachedTextGenerator.fontSizeUsedForBestFit;
+		Debug.Log (ApplicationModel.idealFontSize);
+
+		StartCoroutine (WaitAndStartGame (2.5f));
 	}
 
-	public void StartGame()
+	IEnumerator WaitAndStartGame(float timeToWait)
 	{
-		Application.LoadLevel("level1");
+		yield return new WaitForSeconds (timeToWait);
+		ApplicationModel.scoutsRemaining = 11;
+		Application.LoadLevelAsync("level1");
 	}
 
 	public void ShowCredits(bool creditsVisible)

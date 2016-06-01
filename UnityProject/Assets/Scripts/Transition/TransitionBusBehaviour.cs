@@ -5,9 +5,10 @@ public class TransitionBusBehaviour : MonoBehaviour {
 
 	public TransitionGameEngineBehaviour gameEngine;
 
+
 	// Use this for initialization
 	void Start () {
-	
+
 	}
 	
 	// Update is called once per frame

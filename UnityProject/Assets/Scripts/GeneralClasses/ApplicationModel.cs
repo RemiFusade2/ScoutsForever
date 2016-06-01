@@ -15,9 +15,9 @@ namespace AssemblyCSharp
 {
 	public class ApplicationModel
 	{
-		private static string currentLevelKey = "currentLevel";
-		private static string currentScoutsRemainingKey = "currentScoutsRemaining";
-		private static string totalScoutsSavedKey = "totalScoutsSaved";
+		private static string currentLevelKey = "scoutForever_currentLevel";
+		private static string currentScoutsRemainingKey = "scoutForever_currentScoutsRemaining";
+		private static string totalScoutsSavedKey = "scoutForever_totalScoutsSaved";
 
 		// Current Game Data
 		public static string currentLevel;
@@ -25,6 +25,8 @@ namespace AssemblyCSharp
 
 		// Global Data
 		public static int totalScoutsSaved;
+
+		public static int idealFontSize;
 
 		public static void SaveData()
 		{
@@ -38,7 +40,7 @@ namespace AssemblyCSharp
 			if (reinitCurrentGame)
 			{
 				currentLevel = "";
-				scoutsRemaining = 15;
+				scoutsRemaining = 11;
 			}
 			else
 			{

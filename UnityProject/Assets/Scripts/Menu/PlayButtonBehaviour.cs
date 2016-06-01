@@ -8,6 +8,6 @@ public class PlayButtonBehaviour : MonoBehaviour {
 	void OnMouseDown()
 	{
 		this.GetComponent<Animator> ().SetTrigger ("Clicked");
-		gameEngine.PutCurtainDown ();
+		gameEngine.PutCurtainDownAndStartGame ();
 	}   
 }
