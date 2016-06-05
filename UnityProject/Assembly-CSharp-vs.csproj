@@ -63,6 +63,9 @@
      <Compile Include="Assets\Scripts\Menu\MenuMainEngine.cs" />
      <Compile Include="Assets\Scripts\Menu\MenuMainScoutTitleBehaviour.cs" />
      <Compile Include="Assets\Scripts\Menu\PlayButtonBehaviour.cs" />
+     <Compile Include="Assets\Scripts\Scoring\ScoringScreenBackButtonBehaviour.cs" />
+     <Compile Include="Assets\Scripts\Scoring\ScoringScreenClickablePanelBehaviour.cs" />
+     <Compile Include="Assets\Scripts\Scoring\ScoringScreenEngine.cs" />
      <Compile Include="Assets\Scripts\ScoutGroupBehaviour.cs" />
      <Compile Include="Assets\Scripts\Transition\TransitionBusBehaviour.cs" />
      <Compile Include="Assets\Scripts\Transition\TransitionGameEngineBehaviour.cs" />

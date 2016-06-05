@@ -94,7 +94,7 @@ public class WoodFireStoryGameEngine : MonoBehaviour {
 		ShowUI ();
 		uiMainText.text = introTexts[0];
 
-		totalScouts = 11; //ApplicationModel.scoutsRemaining;
+		totalScouts = ApplicationModel.scoutsRemaining;
 		remainingScouts = totalScouts;
 		remainingScoutsInGroup = remainingScouts;
 		savedScouts = 0;
@@ -102,6 +102,8 @@ public class WoodFireStoryGameEngine : MonoBehaviour {
 		scoutGroup.GetComponent<ScoutGroupBehaviour>().UpdateScoutGroup (remainingScoutsInGroup);
 
 		mainCurtain.GetComponent<Animator> ().SetBool ("Up", true);
+		
+		this.GetComponent<Animator> ().SetBool ("Active", true);
 	}
 	
 	private void HideUITemporarily(float seconds)
@@ -157,8 +159,13 @@ public class WoodFireStoryGameEngine : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () 
-	{
-
+	{		
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			mainCurtain.GetComponent<Animator> ().SetBool ("Up", false);
+			this.GetComponent<Animator> ().SetBool ("Active", false);
+			StartCoroutine(WaitAndLoadMenu(2));
+		}
 	}
 
 	private void ScoutsDie(int numberOfScouts, float timeOffset)
@@ -329,7 +336,10 @@ public class WoodFireStoryGameEngine : MonoBehaviour {
 			{
 				// end game
 				mainCurtain.GetComponent<Animator> ().SetBool ("Up", false);
-				StartCoroutine(WaitAndLoadMenu(2.5f));
+				ApplicationModel.totalScoutsSaved = savedScouts;
+				ApplicationModel.totalScoutsLostInForest = totalScouts - savedScouts;
+				StartCoroutine(WaitAndLoadScoring(2.5f));
+				this.GetComponent<Animator> ().SetBool ("Active", false);
 			}
 			else
 			{
@@ -337,13 +347,19 @@ public class WoodFireStoryGameEngine : MonoBehaviour {
 			}
 		}
 	}
-
+	
 	IEnumerator WaitAndLoadMenu(float timeToWait)
 	{
 		yield return new WaitForSeconds (timeToWait);
 		Application.LoadLevelAsync ("menu");
 	}
-		
+	
+	IEnumerator WaitAndLoadScoring(float timeToWait)
+	{
+		yield return new WaitForSeconds (timeToWait);
+		Application.LoadLevelAsync ("scoring");
+	}
+
 	private void LaunchBoringAtmosphere()
 	{
 		// UI

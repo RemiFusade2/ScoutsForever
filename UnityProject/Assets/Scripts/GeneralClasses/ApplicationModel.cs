@@ -26,6 +26,10 @@ namespace AssemblyCSharp
 		// Global Data
 		public static int totalScoutsSaved;
 
+		public static int totalScoutsHitByCar;
+		public static int totalScoutsHurtByAxe;
+		public static int totalScoutsLostInForest;
+
 		public static int idealFontSize;
 
 		public static void SaveData()

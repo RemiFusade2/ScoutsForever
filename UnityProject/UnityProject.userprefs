@@ -1,18 +1,15 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Ville\VilleGameEngineBehaviour.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Scoring\ScoringScreenEngine.cs">
     <Files>
+      <File FileName="Assets\Scripts\Scoring\ScoringScreenBackButtonBehaviour.cs" Line="14" Column="1" />
+      <File FileName="Assets\Scripts\Ville\VilleGameEngineBehaviour.cs" Line="178" Column="4" />
       <File FileName="Assets\Scripts\CouperDuBois\CouperBoisBusBehaviour.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Transition\TransitionGameEngineBehaviour.cs" Line="24" Column="3" />
-      <File FileName="Assets\Scripts\Ville\VilleGameEngineBehaviour.cs" Line="88" Column="17" />
-      <File FileName="Assets\Scripts\Menu\MenuMainEngine.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\GeneralClasses\ApplicationModel.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\CouperDuBois\CouperBoisGameEngine.cs" Line="77" Column="17" />
-      <File FileName="Assets\Scripts\WoodFireStory\WoodFireStoryGameEngine.cs" Line="200" Column="35" />
-      <File FileName="Assets\Scripts\Menu\PlayButtonBehaviour.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Menu\MenuMainCurtainBehaviour.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Transition\TransitionBusBehaviour.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Ville\VilleScoutBehaviourScript.cs" Line="20" Column="4" />
+      <File FileName="Assets\Scripts\Transition\TransitionGameEngineBehaviour.cs" Line="51" Column="3" />
+      <File FileName="Assets\Scripts\Menu\MenuMainEngine.cs" Line="27" Column="3" />
+      <File FileName="Assets\Scripts\Scoring\ScoringScreenEngine.cs" Line="105" Column="37" />
+      <File FileName="Assets\Scripts\CouperDuBois\CouperBoisGameEngine.cs" Line="178" Column="6" />
+      <File FileName="Assets\Scripts\WoodFireStory\WoodFireStoryGameEngine.cs" Line="162" Column="5" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

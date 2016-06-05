@@ -88,7 +88,7 @@ public class VilleGameEngineBehaviour : MonoBehaviour {
 		textIndex = 0;
 		savedScouts = 0;
 		killedScouts = 0;
-		totalScouts = 11; //ApplicationModel.scoutsRemaining;
+		totalScouts = ApplicationModel.scoutsRemaining;
 		remainingScouts = totalScouts;
 
 		ChangeScoutCounter ();
@@ -102,6 +102,8 @@ public class VilleGameEngineBehaviour : MonoBehaviour {
 		UpdateScoutGroup();
 
 		topCurtain.GetComponent<Animator> ().SetBool ("Up", true);
+		
+		this.GetComponent<Animator> ().SetBool ("Active", true);
 	}
 
 	// Update is called once per frame
@@ -167,6 +169,13 @@ public class VilleGameEngineBehaviour : MonoBehaviour {
 			UpdateChoice ();
 		}
 		UpdateSceneEndingCondition ();
+		
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			topCurtain.GetComponent<Animator> ().SetBool ("Up", false);
+			this.GetComponent<Animator> ().SetBool ("Active", false);
+			StartCoroutine(WaitAndLoadMenu(2));
+		}
 	}
 
 	public void UpdateGameEndingCondition()
@@ -181,7 +190,7 @@ public class VilleGameEngineBehaviour : MonoBehaviour {
 			{
 				endingTexts = endingPerfectTexts;
 			} 
-			else if (savedScouts == 0)
+			else if (savedScouts < 2)
 			{				
 				endingTexts = endingFailTexts;
 			}
@@ -197,15 +206,17 @@ public class VilleGameEngineBehaviour : MonoBehaviour {
 		if (sceneEnded && bus == null)
 		{
 			topCurtain.GetComponent<Animator> ().SetBool ("Up", false);
-			if (savedScouts > 0)
+			ApplicationModel.totalScoutsHitByCar = killedScouts;
+			ApplicationModel.scoutsRemaining = savedScouts;
+			if (savedScouts >= 2)
 			{
-				ApplicationModel.scoutsRemaining = savedScouts;
 				StartCoroutine(WaitAndLoadNextLevel(2.5f, "transitionForest"));
 			}
 			else
 			{
-				StartCoroutine(WaitAndLoadMenu(2.5f));
+				StartCoroutine(WaitAndLoadScoring(2.5f));
 			}
+			this.GetComponent<Animator> ().SetBool ("Active", false);
 		}
 	}
 	
@@ -213,6 +224,12 @@ public class VilleGameEngineBehaviour : MonoBehaviour {
 	{
 		yield return new WaitForSeconds (timeToWait);
 		Application.LoadLevelAsync ("menu");
+	}
+	
+	IEnumerator WaitAndLoadScoring(float timeToWait)
+	{
+		yield return new WaitForSeconds (timeToWait);
+		Application.LoadLevelAsync ("scoring");
 	}
 
 	IEnumerator WaitAndLoadNextLevel(float timeToWait, string nextLevelName)
@@ -373,7 +390,7 @@ public class VilleGameEngineBehaviour : MonoBehaviour {
 		{
 			if (showSurpriseFX)
 			{	
-				StartCoroutine(WaitAndInstantiateSurpriseFX(0.1f, scout.transform.position + Vector3.up * 10));
+				StartCoroutine(WaitAndInstantiateSurpriseFX(0.1f, scout));
 			}
 			//scout.GetComponent<ScoutBehaviourScript>().UpdateUserInput(stopOrCross);
 			StartCoroutine(WaitAndUpdateScout(timeToWait, scout, stopOrCross));
@@ -381,11 +398,15 @@ public class VilleGameEngineBehaviour : MonoBehaviour {
 		}
 	}
 
-	IEnumerator WaitAndInstantiateSurpriseFX (float timeToWait, Vector3 position)
+	IEnumerator WaitAndInstantiateSurpriseFX (float timeToWait, GameObject scout)
 	{
 		yield return new WaitForSeconds(timeToWait);
-		GameObject surpriseFXGameObject = Instantiate (supriseFXPrefab, position, Quaternion.Euler(90, 270, 90)) as GameObject;
-		StartCoroutine(WaitAndKillGameObject( 1.5f, surpriseFXGameObject));
+		if (scout != null)
+		{
+			GameObject surpriseFXGameObject = Instantiate (supriseFXPrefab, scout.transform.position - scout.transform.forward * 10 - Vector3.forward * 0.501f, Quaternion.Euler(90,90,270)) as GameObject;
+			surpriseFXGameObject.transform.parent = scout.transform;
+			StartCoroutine(WaitAndKillGameObject( 1.5f, surpriseFXGameObject));
+		}
 	}
 
 	IEnumerator WaitAndUpdateScout(float timeToWait, GameObject scout, int stopOrCross)

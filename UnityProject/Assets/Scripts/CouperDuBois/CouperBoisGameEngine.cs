@@ -92,6 +92,8 @@ public class CouperBoisGameEngine : MonoBehaviour
 		sceneEnded = false;
 
 		groupIsReady = false;
+
+		this.GetComponent<Animator> ().SetBool ("Active", true);
 	}
 	
 	// Update is called once per frame
@@ -173,6 +175,13 @@ public class CouperBoisGameEngine : MonoBehaviour
 			}
 			
 			UpdateScoutCounter();
+		}		
+		
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			mainCurtain.GetComponent<Animator> ().SetBool ("Up", false);
+			this.GetComponent<Animator> ().SetBool ("Active", false);
+			StartCoroutine(WaitAndLoadMenu(2));
 		}
 	}
 
@@ -325,15 +334,18 @@ public class CouperBoisGameEngine : MonoBehaviour
 			sceneEnded = true;
 			mainCurtain.GetComponent<Animator>().SetBool("Up", false);
 			
+			ApplicationModel.scoutsRemaining = remainingScouts;
+			ApplicationModel.totalScoutsHurtByAxe = killedScouts;
+
 			if (endingTexts != endingFailTexts)
 			{
-				ApplicationModel.scoutsRemaining = remainingScouts;
 				StartCoroutine(WaitAndLoadNextLevel(2.5f, "levelWoodFire"));
 			}
 			else
 			{
-				StartCoroutine(WaitAndLoadMenu(2.5f));
+				StartCoroutine(WaitAndLoadScoring(2.5f));
 			}
+			this.GetComponent<Animator> ().SetBool ("Active", false);
 
 		}
 	}
@@ -342,6 +354,12 @@ public class CouperBoisGameEngine : MonoBehaviour
 	{
 		yield return new WaitForSeconds (timeToWait);
 		Application.LoadLevelAsync ("menu");
+	}
+	
+	IEnumerator WaitAndLoadScoring(float timeToWait)
+	{
+		yield return new WaitForSeconds (timeToWait);
+		Application.LoadLevelAsync ("scoring");
 	}
 	
 	IEnumerator WaitAndLoadNextLevel(float timeToWait, string nextLevelName)
@@ -362,6 +380,8 @@ public class CouperBoisGameEngine : MonoBehaviour
 		{
 			scoutBucheron.GetComponent<CouperBoisScoutBucheronBehaviour>().GiveOrder(-1);
 		}
+		
+		StartCoroutine(WaitAndInstantiateSurpriseFX(0.1f, scoutBucheron));
 	}
 
 	public void KillScout(GameObject scout)
@@ -406,4 +426,18 @@ public class CouperBoisGameEngine : MonoBehaviour
 		
 		Camera.main.transform.position = originalCamPos;
 	}
+
+	public GameObject supriseFXPrefab;
+	
+	IEnumerator WaitAndInstantiateSurpriseFX (float timeToWait, GameObject scout)
+	{
+		yield return new WaitForSeconds(timeToWait);
+		if (scout != null)
+		{
+			GameObject surpriseFXGameObject = Instantiate (supriseFXPrefab, scout.transform.position - scout.transform.forward * 10 - Vector3.forward * 0.501f, Quaternion.Euler(90,90,270)) as GameObject;
+			surpriseFXGameObject.transform.parent = scout.transform;
+			StartCoroutine(WaitAndKillGameObject( 1.5f, surpriseFXGameObject));
+		}
+	}
+
 }

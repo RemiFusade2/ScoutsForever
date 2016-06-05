@@ -18,11 +18,17 @@ public class MenuMainEngine : MonoBehaviour {
 	{
 		mainCurtain.GetComponent<Animator> ().SetBool ("Up", true);
 		ShowCredits (false);
+
+		this.GetComponent<Animator> ().SetBool ("Active", true);
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
+	void Update () 
+	{
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			Application.Quit();
+		}
 	}
 
 	public void PutCurtainDownAndStartGame()
@@ -33,12 +39,16 @@ public class MenuMainEngine : MonoBehaviour {
 		Debug.Log (ApplicationModel.idealFontSize);
 
 		StartCoroutine (WaitAndStartGame (2.5f));
+		this.GetComponent<Animator> ().SetBool ("Active", false);
 	}
 
 	IEnumerator WaitAndStartGame(float timeToWait)
 	{
 		yield return new WaitForSeconds (timeToWait);
 		ApplicationModel.scoutsRemaining = 11;
+		ApplicationModel.totalScoutsHitByCar = 0;
+		ApplicationModel.totalScoutsHurtByAxe = 0;
+		ApplicationModel.totalScoutsLostInForest = 0;
 		Application.LoadLevelAsync("level1");
 	}
 

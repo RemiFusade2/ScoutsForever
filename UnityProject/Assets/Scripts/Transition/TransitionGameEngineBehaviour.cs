@@ -28,6 +28,8 @@ public class TransitionGameEngineBehaviour : MonoBehaviour {
 		sceneEnded = false;
 		textIndex = 0;
 		//mainCurtain.GetComponent<Animator> ().SetBool ("Up", true);
+
+		this.GetComponent<Animator> ().SetBool ("Active", true);
 	}
 	
 	// Update is called once per frame
@@ -38,6 +40,21 @@ public class TransitionGameEngineBehaviour : MonoBehaviour {
 			nextButton.SetActive(true);
 			uiMainText.text = texts[textIndex];
 		}
+		
+		
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			mainCurtain.GetComponent<Animator> ().SetBool ("Up", false);
+			this.GetComponent<Animator> ().SetBool ("Active", false);
+			StartCoroutine(WaitAndLoadMenu(2));
+		}
+	}	
+	
+	
+	IEnumerator WaitAndLoadMenu(float timeToWait)
+	{
+		yield return new WaitForSeconds (timeToWait);
+		Application.LoadLevelAsync ("menu");
 	}
 
 	public void NextText()
@@ -59,6 +76,8 @@ public class TransitionGameEngineBehaviour : MonoBehaviour {
 		sceneEnded = true;
 		// load next scene
 		StartCoroutine(WaitAndLoadNextLevel(1.5f, "levelCutWood"));
+		
+		this.GetComponent<Animator> ().SetBool ("Active", false);
 	}
 
 	IEnumerator WaitAndLoadNextLevel(float timeToWait, string nextLevelName)
